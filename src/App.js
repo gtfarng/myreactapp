@@ -1,28 +1,52 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Github from './github/Github'
+import { Provider } from 'react-redux'
+import { createStore, combineReducers, applyMiddleware  } from 'redux'
+import logger from 'redux-logger'
+import thunk from 'redux-thunk'
+import './App.css'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+export const set = (x) => ({ type: 'SET', value: x })
+export const reset = () => ({ type: 'RESET' })
+
+export const githubReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'RESET':
+      return state = []
+    case 'SET': {
+      if (action.value === 'null')
+        return state.concat([''])
+      else
+        return state.concat([action.value])
+    }
+    default:
+      return state
   }
 }
 
-export default App;
+export const rootReducer = combineReducers({ githubs: githubReducer })
+export const store = createStore(rootReducer,applyMiddleware(logger,thunk))
+
+export default class App extends Component {
+  render() {
+    return (
+      <div align="center">
+        <header className="App-header">
+          <br /><h1>My-App</h1><br />
+        </header>
+
+
+        <div>
+          <Provider store={store}>
+            <Github />
+
+
+          </Provider>
+        </div>
+      </div>
+    )
+  }
+}
+
+
+
