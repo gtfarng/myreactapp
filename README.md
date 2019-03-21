@@ -1,5 +1,3 @@
-### `npm install`
-### `npm start`
--Axios
--Input Form
--onClick
+### `yarn install`
+### `yarn start`
+
